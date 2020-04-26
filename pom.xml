@@ -5,11 +5,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.test</groupId>
-    <artifactId>netty-websocket</artifactId>
+    <artifactId>netty-chat</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>netty-websocket</name>
-    <url>https://github.com/thbspan/netty-websocket</url>
+    <name>netty-chat</name>
+    <url>https://github.com/thbspan/netty-chat</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
