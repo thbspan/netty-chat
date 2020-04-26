@@ -22,7 +22,7 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 public class ChatServer {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatServer.class);
 
-    private static final int DEFAULT_PORT = 9527;
+    private static final int DEFAULT_PORT = 9526;
 
     private static final String WEBSOCKET_PATH = "/ws";
     public void start() {
