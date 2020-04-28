@@ -1,12 +1,48 @@
 <!doctype html>
-<html lang="en">
+<html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>chat page</title>
+    <title>welcome to chat room</title>
+    <link rel="stylesheet" href="css/style.css"/>
+    <script type="text/javascript" src="js/lib/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
 </head>
 <body>
-
+<div>
+    <div class="con-login">
+        <span>欢迎进入聊天室</span>
+        <input type="text" style="width:180px;" placeholder="请先输入昵称" id="nickname"/>
+        <input type="button" style="width:50px;" value="进入" onclick="CHAT.login();"/>
+        <div id="error-msg" style="color:#f00;"></div>
+    </div>
+    <div class="con-chat">
+        <div class="con-chat-nav">
+            <div>
+                <span>聊天室</span>
+                <span>
+                	<span>当前在线<span class="chat-online-count">0</span>人</span> |
+	                <span class="chat-nickname"></span> |
+	                <a href="javascript:;">退出</a>
+                </span>
+            </div>
+        </div>
+        <div class="con-chat-main">
+            <div class="chat-msg-parent">
+                <div class="chat-msg"></div>
+            </div>
+            <div class="chat-tool-box">
+                <div class="face-box" id="face-box"></div>
+                <span class="face" onclick="openFace()" title="选择表情"></span>
+            </div>
+            <div class="chat-input-box">
+                <div class="chat-input" contenteditable="true"></div>
+                <div class="btn-send">
+                    <input class="button" type="button" onclick="CHAT.sendUserInput()" value="发送"/>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -40,11 +40,11 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
 
             String contextType;
             if (path.endsWith(".css")) {
-                contextType = "text/html";
+                contextType = "text/css";
             } else if (path.endsWith(".js")) {
                 contextType = "text/javascript";
             } else if (PATTERN_END_WITH_IMAGES.matcher(path).matches()) {
-                contextType = "image/" + path.substring(path.lastIndexOf("."));
+                contextType = "image/" + path.substring(path.lastIndexOf(".") + 1);
             } else if (path.endsWith(".ico")) {
                 contextType = "image/x-icon";
             } else {

@@ -1,9 +1,8 @@
 package org.test.netty.chat.server.handler;
 
-import java.time.LocalDateTime;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.test.netty.chat.processor.MessageProcessor;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFutureListener;
@@ -18,6 +17,7 @@ import io.netty.handler.codec.http.websocketx.WebSocketFrame;
 public class WebSocketServerFrameHandler extends SimpleChannelInboundHandler<WebSocketFrame> {
     private static final Logger LOGGER = LoggerFactory.getLogger(WebSocketServerFrameHandler.class);
 
+    private final MessageProcessor messageProcessor = new MessageProcessor();
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, WebSocketFrame frame) throws Exception {
         if (frame instanceof CloseWebSocketFrame) {
@@ -31,10 +31,7 @@ public class WebSocketServerFrameHandler extends SimpleChannelInboundHandler<Web
         }
 
         if (frame instanceof TextWebSocketFrame) {
-            String textMessage = ((TextWebSocketFrame) frame).text();
-            TextWebSocketFrame textWebSocketFrame = new TextWebSocketFrame(LocalDateTime.now().toString() + ctx.channel().id() + ":" + textMessage);
-
-
+            messageProcessor.process(ctx.channel(), ((TextWebSocketFrame) frame).text());
         } else {
             String message = "unsupported frame type: " + frame.getClass().getName();
             throw new UnsupportedOperationException(message);
@@ -44,7 +41,7 @@ public class WebSocketServerFrameHandler extends SimpleChannelInboundHandler<Web
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
         Channel channel = ctx.channel();
-
-        LOGGER.error("web socket client exception", cause);
+        LOGGER.error("web socket client({}) exception", messageProcessor.getNickName(channel), cause);
+        channel.close();
     }
 }
