@@ -47,7 +47,7 @@ public class ChatServer {
 
                                     .addLast(new WebSocketServerCompressionHandler())
                                     .addLast(new WebSocketServerProtocolHandler(WEBSOCKET_PATH, null, true))
-                                    // 处理web页面的请求，放在websocket请求后面（因为websocket连接通过http请求升级得到的）
+                                    // 处理web页面的请求，放在websocket请求后面（因为websocket连接是通过http请求升级得到的）
                                     .addLast(new HttpServerHandler())
                                     .addLast(new WebSocketServerFrameHandler());
                         }
