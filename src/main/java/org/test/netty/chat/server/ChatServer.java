@@ -22,7 +22,7 @@ import io.netty.handler.stream.ChunkedWriteHandler;
 public class ChatServer {
     private static final Logger LOGGER = LoggerFactory.getLogger(ChatServer.class);
 
-    private static final int DEFAULT_PORT = 9527;
+    private static final int DEFAULT_PORT = 9526;
 
     private static final String WEBSOCKET_PATH = "/ws";
     public void start() {
@@ -35,7 +35,7 @@ public class ChatServer {
             serverBootstrap.group(bossGroup, workerGroup)
                     .channel(NioServerSocketChannel.class)
                     .option(ChannelOption.SO_BACKLOG, 1024)
-                    .option(ChannelOption.SO_KEEPALIVE, true)
+                    .childOption(ChannelOption.SO_KEEPALIVE, true)
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
@@ -44,10 +44,11 @@ public class ChatServer {
                                     .addLast("http-aggregator", new HttpObjectAggregator(64 * 1024))
                                     // 处理大文件数据流
                                     .addLast(new ChunkedWriteHandler())
-                                    // 处理web页面的请求
-                                    .addLast(new HttpServerHandler())
+
                                     .addLast(new WebSocketServerCompressionHandler())
                                     .addLast(new WebSocketServerProtocolHandler(WEBSOCKET_PATH, null, true))
+                                    // 处理web页面的请求，放在websocket请求后面（因为websocket连接是通过http请求升级得到的）
+                                    .addLast(new HttpServerHandler())
                                     .addLast(new WebSocketServerFrameHandler());
                         }
                     });

@@ -1,0 +1,80 @@
+@media (max-device-width: 480px) and (orientation: portrait) {
+    @-webkit-viewport {
+        width: 320px;
+    }
+}
+
+body {
+    margin: 0;
+}
+
+.con-login {
+    width: 300px;
+    margin: 200px auto;
+    text-align: center;
+}
+
+.con-login span {
+    display: inline-block;
+    margin: 20px 0;
+}
+
+.con-chat {
+    display: none;
+    position: fixed;
+    padding: 0 10px;
+    z-index: 999;
+}
+
+.con-chat .con-chat-nav {
+    background: #000;
+    color: #FFF;
+    line-height: 28px;
+    width: calc(100vw - 20px);
+    font-size: 14px;
+}
+
+.con-chat .con-chat-nav div > span:last-child {
+    float: right;
+}
+
+.con-chat .con-chat-nav a {
+    color: #FFF;
+    text-decoration: none;
+}
+
+.con-chat .con-chat-nav a:hover {
+    text-decoration: underline;
+}
+
+.con-chat-main {
+    background-color: #ccc;
+    height: calc(100vh - 30px);
+}
+
+.con-chat-main .chat-msg-parent {
+    height: calc(100% - 200px);
+}
+.con-chat-main .chat-msg-parent .chat-msg{
+    height: 100%;
+}
+.con-chat-main .chat-tool-box {
+    height: 36px;
+    background-color: #fffeeb
+}
+
+.con-chat-main .chat-input-box {
+    height: 160px;
+    position: relative;
+}
+
+.con-chat-main .chat-input-box .chat-input {
+    background-color: #FFF;
+    height: 100%;
+}
+
+.con-chat-main .chat-input-box .btn-send {
+    bottom: 0;
+    position: absolute;
+    right: 0;
+}

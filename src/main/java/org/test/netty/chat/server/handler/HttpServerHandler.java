@@ -19,6 +19,7 @@ import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import io.netty.handler.codec.http.HttpUtil;
 import io.netty.handler.codec.http.LastHttpContent;
+import io.netty.handler.codec.http.QueryStringDecoder;
 
 public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
     private static final Logger LOGGER = LoggerFactory.getLogger(HttpServerHandler.class);
@@ -29,21 +30,22 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest request) throws Exception {
-        String uri = request.uri();
+        // 解析get请求url中的path和参数，post请求是HttpPostRequestDecoder
+        QueryStringDecoder queryStringDecoder = new QueryStringDecoder(request.uri());
 
-        String page = WEB_ROOT_PATH + ("/".equals(uri) ? "/index.html" : uri);
+        String path = queryStringDecoder.path();
+        String page = WEB_ROOT_PATH + ("/".equals(path) ? "/index.html" : path);
 
-        try (RandomAccessFile file = new RandomAccessFile(
-                Paths.get(HttpServerHandler.class.getResource(page).toURI()).toFile(), "r")) {
+        try (RandomAccessFile file = new RandomAccessFile(Paths.get(HttpServerHandler.class.getResource(page).toURI()).toFile(), "r")) {
 
             String contextType;
-            if (uri.endsWith(".css")) {
-                contextType = "text/html";
-            } else if (uri.endsWith(".js")) {
+            if (path.endsWith(".css")) {
+                contextType = "text/css";
+            } else if (path.endsWith(".js")) {
                 contextType = "text/javascript";
-            } else if (PATTERN_END_WITH_IMAGES.matcher(uri).matches()) {
-                contextType = "image/" + uri.substring(uri.lastIndexOf("."));
-            } else if (uri.endsWith(".ico")) {
+            } else if (PATTERN_END_WITH_IMAGES.matcher(path).matches()) {
+                contextType = "image/" + path.substring(path.lastIndexOf(".") + 1);
+            } else if (path.endsWith(".ico")) {
                 contextType = "image/x-icon";
             } else {
                 contextType = "text/html";
